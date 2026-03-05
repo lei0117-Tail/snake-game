@@ -459,6 +459,7 @@
     </div>
 
     <script>
+        // 获取DOM元素
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
@@ -490,7 +491,7 @@
             paused: false,
             startTime: null,
             totalGameTime: 0,
-            highScore: localStorage.getItem('snakeHighScore') || 0,
+            highScore: parseInt(localStorage.getItem('snakeHighScore')) || 0,
             gamesPlayed: parseInt(localStorage.getItem('snakeGamesPlayed')) || 0,
             totalTimePlayed: parseInt(localStorage.getItem('snakeTotalTime')) || 0
         };
@@ -707,12 +708,12 @@
             }
         }
         
-        function gameLoop() {
+        function gameLoopFunction() {
             if (gameState.gameRunning) {
                 update();
                 draw();
                 setTimeout(() => {
-                    gameLoop();
+                    gameLoopFunction();
                 }, gameState.speed);
             }
         }
@@ -727,7 +728,7 @@
             if (!gameState.gameRunning) {
                 gameState.gameRunning = true;
                 gameState.paused = false;
-                gameLoop();
+                gameLoopFunction();
             }
         }
         
@@ -920,10 +921,15 @@
         }, { passive: false });
         
         // 初始化游戏
-        initGame();
-        draw();
-        showOverlay('🐍 终极贪吃蛇', '点击开始游戏按钮开始冒险！');
-        updateDisplay();
+        function init() {
+            initGame();
+            draw();
+            showOverlay('🐍 终极贪吃蛇', '点击开始游戏按钮开始冒险！');
+            updateDisplay();
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
